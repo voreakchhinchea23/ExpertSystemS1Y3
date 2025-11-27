@@ -1,0 +1,22 @@
+[
+  {"id": "chicken", "description": "Chicken available", "value": false},
+  {"id": "eggs", "description": "Eggs available", "value": false},
+  {"id": "rice", "description": "Rice available", "value": false},
+  {"id": "pasta", "description": "Pasta available", "value": false},
+  {"id": "potatoes", "description": "Potatoes available", "value": false},
+  {"id": "bread", "description": "Bread available", "value": false},
+  {"id": "cheese", "description": "Cheese available", "value": false},
+  {"id": "maggi", "description": "Maggi available", "value": false},
+  {"id": "tomato", "description": "Tomato available", "value": false},
+  {"id": "onion", "description": "Onion available", "value": false},
+  {"id": "paneer", "description": "Paneer available", "value": false},
+  {"id": "milk", "description": "Milk available", "value": false},
+
+  {"id": "rec1", "description": "Recommend: Maggi", "value": false},
+  {"id": "rec2", "description": "Recommend: Egg Fried Rice", "value": false},
+  {"id": "rec3", "description": "Recommend: Grilled Cheese Sandwich", "value": false},
+  {"id": "rec4", "description": "Recommend: Aloo Paratha", "value": false},
+  {"id": "rec5", "description": "Recommend: Chicken Curry", "value": false},
+  {"id": "rec6", "description": "Recommend: Paneer Butter Masala", "value": false},
+  {"id": "rec7", "description": "Recommend: Tomato Omelette", "value": false}
+]

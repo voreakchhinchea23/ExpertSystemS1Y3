@@ -1,0 +1,9 @@
+[
+  {"id": "r1", "conditions": ["maggi"], "conclusion": "rec1", "explain": "Just boil Maggi — fastest meal!"},
+  {"id": "r2", "conditions": ["eggs", "rice"], "conclusion": "rec2", "explain": "Perfect combination for Egg Fried Rice"},
+  {"id": "r3", "conditions": ["bread", "cheese"], "conclusion": "rec3", "explain": "Make a quick Grilled Cheese Sandwich"},
+  {"id": "r4", "conditions": ["potatoes"], "conclusion": "rec4", "explain": "Potatoes → delicious Aloo Paratha"},
+  {"id": "r5", "conditions": ["chicken", "tomato", "onion"], "conclusion": "rec5", "explain": "You can make Chicken Curry"},
+  {"id": "r6", "conditions": ["paneer", "tomato"], "conclusion": "rec6", "explain": "Paneer + Tomato → Paneer Butter Masala"},
+  {"id": "r7", "conditions": ["eggs", "tomato"], "conclusion": "rec7", "explain": "Make tasty Tomato Omelette"}
+]

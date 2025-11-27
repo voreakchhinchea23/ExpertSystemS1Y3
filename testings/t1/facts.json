@@ -1,0 +1,82 @@
+[
+    {
+        "id": 1,
+        "name": "Google Pixel 9a",
+        "price": 499,
+        "camera": 9.5,
+        "battery": 8.5,
+        "gaming": 7.0
+    },
+    {
+        "id": 2,
+        "name": "Samsung Galaxy A55",
+        "price": 450,
+        "camera": 8.0,
+        "battery": 9.0,
+        "gaming": 7.5
+    },
+    {
+        "id": 3,
+        "name": "OnePlus 13R",
+        "price": 599,
+        "camera": 8.0,
+        "battery": 9.5,
+        "gaming": 9.5
+    },
+    {
+        "id": 4,
+        "name": "iPhone 16",
+        "price": 799,
+        "camera": 9.8,
+        "battery": 8.0,
+        "gaming": 9.0
+    },
+    {
+        "id": 5,
+        "name": "Xiaomi 14T Pro",
+        "price": 650,
+        "camera": 9.0,
+        "battery": 8.5,
+        "gaming": 10.0
+    },
+    {
+        "id": 6,
+        "name": "Nothing Phone (3)",
+        "price": 549,
+        "camera": 8.5,
+        "battery": 9.0,
+        "gaming": 8.5
+    },
+    {
+        "id": 7,
+        "name": "Realme GT 7",
+        "price": 420,
+        "camera": 7.5,
+        "battery": 9.5,
+        "gaming": 9.8
+    },
+    {
+        "id": 8,
+        "name": "Poco F7 Pro",
+        "price": 489,
+        "camera": 8.0,
+        "battery": 9.2,
+        "gaming": 10.0
+    },
+    {
+        "id": 9,
+        "name": "Samsung Galaxy S24 FE",
+        "price": 699,
+        "camera": 9.0,
+        "battery": 8.0,
+        "gaming": 8.5
+    },
+    {
+        "id": 10,
+        "name": "Motorola Edge 50 Fusion",
+        "price": 380,
+        "camera": 7.5,
+        "battery": 9.8,
+        "gaming": 7.0
+    }
+]

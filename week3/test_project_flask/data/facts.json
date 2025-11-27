@@ -1,0 +1,43 @@
+[
+    {
+        "id": "f1",
+        "description" : "Patient has fever",
+        "value" : true,
+        "tags":[
+            "symptom"
+        ]
+    },
+    {
+        "id": "f2",
+        "description" : "Patient has cough",
+        "value" : true,
+        "tags":[
+            "symptom"
+        ]
+    },
+    {
+        "id": "f3",
+        "description" : "Patient has headache",
+        "value" : false,
+        "tags":[
+            "symptom"
+        ]
+    },
+    {
+        "id": "f4",
+        "description" : "Patient has fatigue",
+        "value" : true,
+        "tags":[
+            "symptom"
+        ]
+    },
+    {
+        "id": "f5",
+        "description" : "Patient has sore throat",
+        "value" : false,
+        "tags":[
+            "symptom"
+        ]
+    }
+
+]
