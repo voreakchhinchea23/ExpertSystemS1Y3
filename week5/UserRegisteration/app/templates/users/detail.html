@@ -5,12 +5,12 @@ endblock %} {% block content %}
   <div>
     <a
       href="{{ url_for('users.edit', user_id=user.id) }}"
-      class="btn btn-sm btn-outline-secondary"
+      class="btn btn-sm btn-warning text-light"
       ><i class="fa-solid fa-pencil"></i>Edit</a
     >
     <a
       href="{{ url_for('users.index') }}"
-      class="btn btn-sm btn-outline-primary"
+      class="btn btn-sm btn-outline-secondary"
       >Back to list</a
     >
   </div>
