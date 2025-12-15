@@ -1,6 +1,6 @@
 from flask import Flask, redirect, url_for
 from config import Config
-from extensions import db, csrf
+from extensions import db, csrf, login_manager
 
 def create_app(config_class: type[Config] = Config):
     app = Flask(__name__)
@@ -8,10 +8,16 @@ def create_app(config_class: type[Config] = Config):
     
     db.init_app(app)
     csrf.init_app(app)
+    login_manager.init_app(app)
     
     # register blueprints
     from app.routes.user_routes import user_bp
+    from app.routes.auth_routes import auth_bp
+    from app.routes.roles_route import role_bp
+    
     app.register_blueprint(user_bp)
+    app.register_blueprint(auth_bp)
+    app.register_blueprint(role_bp)
     
     # add this block so "/" goes to the users list
     @app.route("/")

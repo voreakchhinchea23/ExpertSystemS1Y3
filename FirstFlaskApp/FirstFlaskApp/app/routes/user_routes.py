@@ -81,3 +81,5 @@ def delete(user_id: int):
     UserService.delete(user)
     flash("User was deleted successfully.", "success")
     return redirect(url_for("users.index"))
+
+

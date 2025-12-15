@@ -1,1 +1,5 @@
-from .user import User
+from .user import UserTable
+from .role import RoleTable
+from .permission import PermissionTable
+
+__all__ = ["UserTable", "RoleTable", "PermissionTable"]

@@ -1,9 +1,9 @@
 from datetime import datetime
 from extensions import db
-from app.models.associations import user_roles, role_permissions
+from app.models.associations import tbl_user_roles, tbl_role_permissions
 
-class Role(db.Modrl):
-    __tablename__ = "roles"
+class RoleTable(db.Model):
+    __tablename__ = "tbl_roles"
     
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), unique=True, nullable=False)
@@ -14,8 +14,8 @@ class Role(db.Modrl):
         db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False
     )
     
-    users = db.relationship("User", secondary=user_roles, back_populates="roles")
-    permissions = db.relationship("Permission", secondary=role_permissions, back_populates="roles")
+    users = db.relationship("UserTable", secondary=tbl_user_roles, back_populates="roles")
+    permissions = db.relationship("PermissionTable", secondary=tbl_role_permissions, back_populates="roles")
     
     def has_permission(self, permission_code: str) -> bool:
         return any(p.code == permission_code for p in self.permissions)
