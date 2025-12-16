@@ -26,8 +26,8 @@ class PermissionService:
     @staticmethod 
     def update_permission(
         permission: PermissionTable,
-        data: dict
-    ) -> PermissionTable:
+        data: dict) -> PermissionTable:
+        
         permission.code = data["code"]
         permission.name = data["name"]
         permission.module = data.get("module", "General")

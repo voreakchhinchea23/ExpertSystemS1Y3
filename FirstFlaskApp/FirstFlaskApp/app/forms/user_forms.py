@@ -1,9 +1,9 @@
 import re
 from flask_wtf import FlaskForm
-from wtforms import BooleanField, StringField, SubmitField, PasswordField
+from wtforms import BooleanField, StringField, SubmitField, PasswordField, SelectField
 from wtforms.validators import DataRequired, Email, Length, EqualTo, ValidationError, StopValidation
-
-from app.models import User
+from app.models import UserTable
+from app.models import RoleTable
 from extensions import db
 
 # ----- helpers -----
@@ -32,6 +32,15 @@ def strong_password(form, field):
     
 # ----- create form (password required) -----
 
+def _role_choices():
+    """Return list of (id, name) tuples for all roles, order by name."""
+    return [
+        (role.id, role.name)
+        for role in db.session.scalars(
+            db.select(RoleTable).order_by(RoleTable.name)
+        )
+    ]
+
 class UserCreateForm(FlaskForm):
     username = StringField(
         "Username",
@@ -49,6 +58,13 @@ class UserCreateForm(FlaskForm):
         render_kw={"placeholder": "Enter full name"}
     )
     is_active = BooleanField("Active", default=True)
+    
+    role_id = SelectField(
+        "Role",
+        coerce=int,
+        validators=[DataRequired()],
+        render_kw={"placeholder": "Select role"}
+    )
     
     password = PasswordField(
         "Password",
@@ -71,16 +87,20 @@ class UserCreateForm(FlaskForm):
     
     # ----- server-side uniqueness checks -----
     
+    def __init__(self, formdata=..., **kwargs):
+        super().__init__(formdata, **kwargs)
+        self.role_id.choices = _role_choices()
+    
     def validate_username(self, field):
         exists = db.session.scalar(
-            db.select(User).filter(User.username == field.data)
+            db.select(UserTable).filter(UserTable.username == field.data)
         )
         if exists:
             raise ValidationError("This username is already taken.")
         
     def validate_email(self, field):
         exists = db.session.scalar(
-            db.select(User).filter(User.email == field.data)
+            db.select(UserTable).filter(UserTable.email == field.data)
         )
         if(exists):
             raise ValidationError("This email is already registered.")
@@ -102,6 +122,12 @@ class UserEditForm(FlaskForm):
     )
     is_active = BooleanField("Active")
     
+    role_id = SelectField(
+        "Role",
+        coerce=int,
+        validators=[DataRequired()]
+    )
+    
     #optional password - only change if filled
     password = PasswordField(
         "New password (leave blank to keep current)",
@@ -115,22 +141,29 @@ class UserEditForm(FlaskForm):
     
     submit = SubmitField("Update") 
     
-    def __init__(self, original_user: User, *args, **kwargs):
+    def __init__(self, original_user: UserTable, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.original_user = original_user
+        self.role_id.choices = _role_choices
+        
+        if not self.is_submitted():
+            if original_user.roles:
+                self.role_id.data = original_user.roles[0].id
+            else:
+                self.role_id.data = None
         
     def validate_user(self, field):
-        q = db.select(User).filter(User.username == field.data, User.id != self.original_user.id)
+        q = db.select(UserTable).filter(UserTable.username == field.data, UserTable.id != self.original_user.id)
         exists = db.session.scalar(q)
         if exists:
             raise ValidationError("This username is already taken.")
         
     def validate_email(self, field):
-        q = db.select(User).filter(User.email == field.data, User.id != self.original_user.id)
+        q = db.select(UserTable).filter(UserTable.email == field.data, UserTable.id != self.original_user.id)
         exists = db.session.scalar(q)
         if exists:
             raise ValidationError("This email is already registered.")
         
 
-class ConfirmDeleteForm(FlaskForm):
+class UserConfirmDeleteForm(FlaskForm):
     submit = SubmitField("Confirm Delete")

@@ -6,25 +6,28 @@ from flask import (
     flash,
     abort
 )
-
+from flask_login import login_required
 from app.forms.user_forms import UserCreateForm, UserEditForm, ConfirmDeleteForm
 from app.services.user_service import UserService
-
-user_bp = Blueprint("users", __name__, url_prefix="/users")
+# blueprint name define endpoint prefix: tbl_users
+user_bp = Blueprint("tbl_users", __name__, url_prefix="/users")
 
 @user_bp.route("/")
+@login_required
 def index():
-    users = UserService.get_all()
+    users = UserService.get_all_users()
     return render_template("users/index.html", users=users)
 
 @user_bp.route("/<int:user_id>")
+@login_required
 def detail(user_id: int):
-    user = UserService.get_by_id(user_id)
+    user = UserService.get_user_by_id(user_id)
     if user is None:
         abort(404)
     return render_template("users/detail.html", user=user) # <-----
 
 @user_bp.route("/create", methods=["GET","POST"])
+@login_required
 def create():
     form = UserCreateForm()
     if form.validate_on_submit():
@@ -35,15 +38,18 @@ def create():
             "is_active": form.is_active.data
         }
         password = form.password.data
-        user = UserService.create(data, password)
+        role_id = form.role_id.data or None
+        
+        user = UserService.create_user(data, password, role_id)
         flash(f"User '{user.username}' was created successfully.", "success")
-        return redirect(url_for("users.index"))
+        return redirect(url_for("tbl_users.index"))
     
     return render_template("users/create.html", form=form)
 
 @user_bp.route("/<int:user_id>/edit", methods=["GET","POST"])
+@login_required
 def edit(user_id: int):
-    user = UserService.get_by_id(user_id)
+    user = UserService.get_user_by_id(user_id)
     if user is None:
         abort(404)
         
@@ -57,15 +63,18 @@ def edit(user_id: int):
             "is_active": form.is_active.data
         }
         password = form.password.data or None
-        UserService.update(user, data, password)
+        role_id = form.role_id.data or None
+        
+        UserService.update_user(user, data, password, role_id)
         flash(f"User '{user.username}' was updated successfully.", "success")
-        return redirect(url_for("users.detail", user_id=user.id))
+        return redirect(url_for("tbl_users.detail", user_id=user.id))
     
     return render_template("users/edit.html", form=form, user=user)
 
 @user_bp.route("/<int:user_id>/delete", methods=["GET"])
+@login_required
 def delete_confirm(user_id:int):
-    user = UserService.get_by_id(user_id)
+    user = UserService.get_user_by_id(user_id)
     if user is None:
         abort(404)
         
@@ -73,13 +82,14 @@ def delete_confirm(user_id:int):
     return render_template("users/delete_confirm.html", user=user,form=form)
 
 @user_bp.route("/<int:user_id>/delete", methods=["POST"])
+@login_required
 def delete(user_id: int):
-    user = UserService.get_by_id(user_id)
+    user = UserService.get_user_by_id(user_id)
     if user is None:
         abort(404)
         
-    UserService.delete(user)
+    UserService.delete_user(user)
     flash("User was deleted successfully.", "success")
-    return redirect(url_for("users.index"))
+    return redirect(url_for("tbl_users.index"))
 
 
