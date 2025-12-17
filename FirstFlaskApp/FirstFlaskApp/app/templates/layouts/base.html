@@ -31,7 +31,7 @@
           <i class="fa-regular fa-user"></i>RBAC Demo
         </a>
         <button
-          class="navbar-toggle"
+          class="navbar-toggler"
           type="button"
           data-bs-toggle="collapse"
           data-bs-target="#navbarMain"
@@ -74,7 +74,7 @@
           <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
             {% if current_user.is_authenticated %}
             <li class="nav-item">
-              <span class="navbar-text me-2">
+              <span class="navbar-text me-2 text-light">
                 Logged in as <strong>{{ current_user.username }}</strong>
               </span>
             </li>

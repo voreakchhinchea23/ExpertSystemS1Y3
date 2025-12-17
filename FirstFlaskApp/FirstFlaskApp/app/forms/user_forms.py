@@ -87,8 +87,8 @@ class UserCreateForm(FlaskForm):
     
     # ----- server-side uniqueness checks -----
     
-    def __init__(self, formdata=..., **kwargs):
-        super().__init__(formdata, **kwargs)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.role_id.choices = _role_choices()
     
     def validate_username(self, field):
@@ -144,7 +144,7 @@ class UserEditForm(FlaskForm):
     def __init__(self, original_user: UserTable, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.original_user = original_user
-        self.role_id.choices = _role_choices
+        self.role_id.choices = _role_choices()
         
         if not self.is_submitted():
             if original_user.roles:

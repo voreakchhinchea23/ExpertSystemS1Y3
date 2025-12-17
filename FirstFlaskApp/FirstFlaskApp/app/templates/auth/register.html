@@ -1,4 +1,4 @@
-{% extends "layouts/base.htm" %} {% block title %}Sign Up{% endblock %} {% block
+{% extends "layouts/base.html" %} {% block title %}Sign Up{% endblock %} {% block
 content %}
 <div class="row justify-content-center">
   <div class="col-md-6">
@@ -7,7 +7,7 @@ content %}
         <h4 class="mb-0">Create a New Account</h4>
       </div>
       <div class="card-body">
-        <form action="POST" action="{{ url_for('auth.register') }}">
+        <form method="POST" action="{{ url_for('auth.register') }}">
           <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
 
           <div class="mb-3">
@@ -16,7 +16,7 @@ content %}
               type="text"
               class="form-control"
               id="username"
-              nam="username"
+              name="username"
               placeholder="Choose a username"
               value="{{ username or '' }}"
               required
@@ -29,7 +29,7 @@ content %}
               type="email"
               class="form-control"
               id="email"
-              nam="email"
+              name="email"
               placeholder="Enter email address"
               value="{{ email or '' }}"
               required
@@ -42,7 +42,7 @@ content %}
               type="text"
               class="form-control"
               id="fullname"
-              nam="fullname"
+              name="fullname"
               placeholder="Enter your full name"
               value="{{ fullname or '' }}"
               required
@@ -55,7 +55,7 @@ content %}
               type="password"
               class="form-control"
               id="password"
-              nam="password"
+              name="password"
               placeholder="Enter a strong password"
               required
             />
@@ -68,7 +68,7 @@ content %}
               type="password"
               class="form-control"
               id="confirm_password"
-              nam="confirm_password"
+              name="confirm_password"
               placeholder="Re-enter your strong password"
               required
             />

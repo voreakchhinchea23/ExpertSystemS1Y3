@@ -1,6 +1,8 @@
 from flask import Flask, redirect, url_for
 from config import Config
 from extensions import db, csrf, login_manager
+from flask_login import LoginManager
+from .models import UserTable
 
 def create_app(config_class: type[Config] = Config):
     app = Flask(__name__)
@@ -9,6 +11,16 @@ def create_app(config_class: type[Config] = Config):
     db.init_app(app)
     csrf.init_app(app)
     login_manager.init_app(app)
+    
+    #optional settings
+    login_manager.login_view = "auth.login"
+    login_manager.login_message = "Please log in to access this page."
+    login_manager.login_message_category = "warning"
+    
+    # this function tells flask-login how to load a user form session
+    @login_manager.user_loader
+    def load_user(user_id):
+        return UserTable.query.get(int(user_id))
     
     # register blueprints
     from app.routes.user_routes import user_bp
@@ -24,11 +36,11 @@ def create_app(config_class: type[Config] = Config):
     # add this block so "/" goes to the users list
     @app.route("/")
     def home():
-        return redirect(url_for('users.index'))
+        return redirect(url_for('tbl_users.index'))
     
     # create tables
     with app.app_context():
-        from app.models import User # noqa: F401
+        from app.models import UserTable, RoleTable, PermissionTable # noqa: F401
         db.create_all()
         
     return app
