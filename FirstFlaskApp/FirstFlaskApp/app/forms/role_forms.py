@@ -1,6 +1,6 @@
 from collections import defaultdict
 from flask_wtf import FlaskForm
-from wtforms import BooleanField, StringField, SubmitField
+from wtforms import BooleanField, StringField, SubmitField, TextAreaField
 from wtforms.validators import DataRequired, Length, EqualTo, ValidationError, StopValidation
 from .multi_checkbox_field import MultiCheckboxField
 from app.models import RoleTable, PermissionTable
@@ -44,7 +44,7 @@ class RoleCreateForm(FlaskForm):
         validators=[DataRequired(), Length(min=1, max=80)],
         render_kw={"placeholder": "Enter role name"}
     )
-    description = StringField(
+    description = TextAreaField(
         "Description",
         render_kw={"placeholder": "Short description (optional)"}
     )
@@ -74,7 +74,7 @@ class RoleEditForm(FlaskForm):
         validators=[DataRequired(), Length(min=1, max=80)],
 
     )
-    description = StringField(
+    description = TextAreaField(
         "Description",
     )
     permission_ids = MultiCheckboxField(
