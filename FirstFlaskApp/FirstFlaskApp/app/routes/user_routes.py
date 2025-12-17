@@ -7,7 +7,7 @@ from flask import (
     abort
 )
 from flask_login import login_required
-from app.forms.user_forms import UserCreateForm, UserEditForm, ConfirmDeleteForm
+from app.forms.user_forms import UserCreateForm, UserEditForm, UserConfirmDeleteForm
 from app.services.user_service import UserService
 # blueprint name define endpoint prefix: tbl_users
 user_bp = Blueprint("tbl_users", __name__, url_prefix="/users")
@@ -78,7 +78,7 @@ def delete_confirm(user_id:int):
     if user is None:
         abort(404)
         
-    form = ConfirmDeleteForm()
+    form = UserConfirmDeleteForm()
     return render_template("users/delete_confirm.html", user=user,form=form)
 
 @user_bp.route("/<int:user_id>/delete", methods=["POST"])

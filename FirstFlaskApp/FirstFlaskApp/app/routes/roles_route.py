@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 
 
-role_bp = Blueprint('roles', __name__,url_prefix="/roles")
+role_bp = Blueprint('tbl_roles', __name__,url_prefix="/roles")
 
 
 @role_bp.route('/')
