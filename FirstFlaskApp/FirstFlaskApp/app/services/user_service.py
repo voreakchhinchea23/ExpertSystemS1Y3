@@ -6,7 +6,7 @@ from extensions import db
 class UserService:
     @staticmethod
     def get_all_users() -> List[UserTable]:
-        return UserTable.query.order_by(UserTable.id.desc()).all()
+        return UserTable.query.order_by(UserTable.id.asc()).all()
     
     @staticmethod
     def get_user_by_id(user_id: int) -> Optional[UserTable]:

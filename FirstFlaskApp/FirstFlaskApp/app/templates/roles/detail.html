@@ -1,4 +1,4 @@
-{% extends "layouts/base.html.html" %} {% block title %}Role Detail{% endblock
+{% extends "layouts/base.html" %} {% block title %}Role Detail{% endblock
 %} {% block content %}
 <div class="d-flex justify-content-between algin-items-center mb-3">
   <div>
@@ -50,7 +50,7 @@
                 <strong>{{ perm.code }}</strong> - {{ perm.name }}
               </div>
               <a
-                href="{{ url_for('tbl_permissions.detail', permission_id=perm.id) }}"
+                href="{{ url_for('tbl_perms.detail', permission_id=perm.id) }}"
                 class="btn btn-sm btn-outline-info"
                 >View</a
               >

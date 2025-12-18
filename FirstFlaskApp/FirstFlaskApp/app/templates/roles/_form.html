@@ -26,8 +26,8 @@
   <div class="mb-3">
     <label class="form-label">{{ form.permission_ids.label.text }}</label>
 
-    {% if form._permissions_by_module %} {% for module_name in
-    form._permissions_by_module.items() %}
+    {% if form.permissions_by_module %} 
+    {% for module_name, perms in form.permissions_by_module.items() %}
     <div class="border rounded p-2 mb-2">
       <div class="fw-bold small text-muted mb-1">{{ module_name }}</div>
       {% for perm in perms %}
@@ -38,16 +38,8 @@
           id="perm_{{ perm.id }}"
           name="{{ form.permission_ids.name }}"
           value="{{ perm.id }}"
-          {%
-          if
-          form.permission_ids.data
-          and
-          perm.id
-          in
-          form.permission_ids.data
-          %}checked{%
-          endif
-          %}
+          {% if form.permission_ids.data and perm.id in form.permission_ids.data %}checked
+          {% endif %}
         />
         <label class="form-check-label" for="perm_{{ perm.id }}">
           <strong>{{ perm.code }}</strong> - {{ perm.name }}
@@ -55,9 +47,11 @@
       </div>
       {% endfor %}
     </div>
-    {% endfor %} {% else %}
+    {% endfor %} 
+    {% else %}
     <p class="text-muted small">No permission defined yet.</p>
-    {% endif %} {% for error in form.permission_ids.errors %}
+    {% endif %} 
+    {% for error in form.permission_ids.errors %}
     <div class="text-danger small">{{ error }}</div>
     {% endfor %}
   </div>

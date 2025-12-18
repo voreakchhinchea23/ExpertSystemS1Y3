@@ -9,6 +9,11 @@ endblock %} {% block content %}
       ><i class="fa-solid fa-pencil"></i>Edit</a
     >
     <a
+      href="{{ url_for('tbl_users.delete_confirm', user_id=user.id) }}"
+      class="btn btn-sm btn-danger"
+      >Delete</a
+    >
+    <a
       href="{{ url_for('tbl_users.index') }}"
       class="btn btn-sm btn-outline-secondary"
       >Back to list</a

@@ -16,7 +16,7 @@ block content %}
 
         {% if role.users %}
             <p class="text-warning small">
-            This role is currently assigned to {{ role.userd|length }} user{{ role.users|length != 1 and 's' or '' }}.
+            This role is currently assigned to {{ role.users|length }} user{{ role.users|length != 1 and 's' or '' }}.
             </p>
         {% endif %}
         <form

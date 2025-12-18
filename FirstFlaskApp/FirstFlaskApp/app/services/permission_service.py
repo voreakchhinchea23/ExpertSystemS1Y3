@@ -15,7 +15,7 @@ class PermissionService:
     def create_permission(data: dict) -> PermissionTable:
         perm = PermissionTable(
             code = data["code"],
-            name=data["data"],
+            name = data["name"],
             module= data.get("module", "General"),
             description= data.get("description") or ""
         )
