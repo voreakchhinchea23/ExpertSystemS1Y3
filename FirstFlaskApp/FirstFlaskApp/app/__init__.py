@@ -2,11 +2,16 @@ from flask import Flask, redirect, url_for
 from config import Config
 from extensions import db, csrf, login_manager
 from flask_login import LoginManager
-from .models import UserTable
+from app.models import UserTable
+from app.common.permissions import Perm
 
 def create_app(config_class: type[Config] = Config):
     app = Flask(__name__)
     app.config.from_object(config_class)
+    
+    @app.context_processor
+    def inject_permissions():
+        return {'perm': Perm}
     
     db.init_app(app)
     csrf.init_app(app)

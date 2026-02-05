@@ -2,18 +2,22 @@ from flask import Blueprint, abort, render_template, request, flash, redirect, u
 from flask_login import login_required
 from app.forms.role_forms import RoleCreateForm, RoleEditForm, RoleConfirmDeleteForm
 from app.services.role_service import RoleService
+from app.utils.decorators import permission_required
+from app.common.permissions import Perm
 
 role_bp = Blueprint('tbl_roles', __name__,url_prefix="/roles")
 
 
 @role_bp.route('/')
 @login_required
+@permission_required(Perm.ROLE_READ)
 def index():
     roles = RoleService.get_all_roles()
     return render_template("roles/index.html", roles=roles)
 
 @role_bp.route('/create', methods=['GET', 'POST'])
 @login_required
+@permission_required(Perm.ROLE_CREATE)
 def create():
     form = RoleCreateForm()
     if form.validate_on_submit():
@@ -30,6 +34,7 @@ def create():
 
 @role_bp.route('/edit/<int:role_id>', methods=['GET', 'POST'])
 @login_required
+@permission_required(Perm.ROLE_UPDATE)
 def edit(role_id: int):
     role = RoleService.get_role_by_id(role_id)
     if role is None:
@@ -52,6 +57,7 @@ def edit(role_id: int):
 
 @role_bp.route('/detail/<int:role_id>', methods=['GET'])
 @login_required
+@permission_required(Perm.ROLE_READ)
 def detail(role_id: int):
     role = RoleService.get_role_by_id(role_id)
     if role is None:
@@ -60,6 +66,7 @@ def detail(role_id: int):
 
 @role_bp.route("/<int:role_id>/delete", methods=["GET"])
 @login_required
+@permission_required(Perm.ROLE_DELETE)
 def delete_confirm(role_id:int):
     role = RoleService.get_role_by_id(role_id)
     if role is None:
@@ -70,6 +77,7 @@ def delete_confirm(role_id:int):
 
 @role_bp.route("/<int:role_id>/delete", methods=["POST"])
 @login_required
+@permission_required(Perm.ROLE_DELETE)
 def delete(role_id: int):
     role = RoleService.get_role_by_id(role_id)
     if role is None:

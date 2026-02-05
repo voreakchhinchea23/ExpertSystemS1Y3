@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -44,7 +44,9 @@
 
         <div class="collapse navbar-collapse" id="navbarMain">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <!--Users-->
+            <!-- Users menu -->
+            {% if current_user.is_authenticated and
+            current_user.has_permission(perm.USER_READ) %}
             <li class="nav-item">
               <a
                 class="nav-link {% if request.blueprint == 'tbl_users' %}active{% endif %}"
@@ -52,7 +54,11 @@
                 >Users</a
               >
             </li>
-            <!--Roles-->
+            {% endif %}
+
+            <!-- Roles menu -->
+            {% if current_user.is_authenticated and
+            current_user.has_permission(perm.ROLE_READ) %}
             <li class="nav-item">
               <a
                 class="nav-link {% if request.blueprint == 'tbl_roles' %}active{% endif %}"
@@ -60,7 +66,11 @@
                 >Roles</a
               >
             </li>
-            <!--Permissions-->
+            {% endif %}
+
+            <!-- Permissions menu -->
+            {% if current_user.is_authenticated and
+            current_user.has_permission(perm.PERM_READ) %}
             <li class="nav-item">
               <a
                 class="nav-link {% if request.blueprint == 'tbl_perms' %}active{% endif %}"
@@ -68,8 +78,8 @@
                 >Permissions</a
               >
             </li>
+            {% endif %}
           </ul>
-
           <!--Auth section-->
           <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
             {% if current_user.is_authenticated %}

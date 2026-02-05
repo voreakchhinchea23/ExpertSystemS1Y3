@@ -6,20 +6,25 @@ from flask import (
     flash,
     abort
 )
+
 from flask_login import login_required
 from app.forms.user_forms import UserCreateForm, UserEditForm, UserConfirmDeleteForm
 from app.services.user_service import UserService
+from app.utils.decorators import permission_required
+from app.common.permissions import Perm
 # blueprint name define endpoint prefix: tbl_users
 user_bp = Blueprint("tbl_users", __name__, url_prefix="/users")
 
 @user_bp.route("/")
 @login_required
+@permission_required(Perm.USER_READ)
 def index():
     users = UserService.get_all_users()
     return render_template("users/index.html", users=users)
 
 @user_bp.route("/<int:user_id>")
 @login_required
+@permission_required(Perm.USER_READ)
 def detail(user_id: int):
     user = UserService.get_user_by_id(user_id)
     if user is None:
@@ -28,6 +33,7 @@ def detail(user_id: int):
 
 @user_bp.route("/create", methods=["GET","POST"])
 @login_required
+@permission_required(Perm.USER_CREATE)
 def create():
     form = UserCreateForm()
     if form.validate_on_submit():
@@ -48,6 +54,7 @@ def create():
 
 @user_bp.route("/<int:user_id>/edit", methods=["GET","POST"])
 @login_required
+@permission_required(Perm.USER_UPDATE)
 def edit(user_id: int):
     user = UserService.get_user_by_id(user_id)
     if user is None:
@@ -73,6 +80,7 @@ def edit(user_id: int):
 
 @user_bp.route("/<int:user_id>/delete", methods=["GET"])
 @login_required
+@permission_required(Perm.USER_DELETE)
 def delete_confirm(user_id:int):
     user = UserService.get_user_by_id(user_id)
     if user is None:
@@ -83,6 +91,7 @@ def delete_confirm(user_id:int):
 
 @user_bp.route("/<int:user_id>/delete", methods=["POST"])
 @login_required
+@permission_required(Perm.USER_DELETE)
 def delete(user_id: int):
     user = UserService.get_user_by_id(user_id)
     if user is None:
