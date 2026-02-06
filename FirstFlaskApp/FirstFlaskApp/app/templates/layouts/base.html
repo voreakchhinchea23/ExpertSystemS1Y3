@@ -44,6 +44,16 @@
 
         <div class="collapse navbar-collapse" id="navbarMain">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <!-- Home -->
+            {% if current_user.is_authenticated %}
+            <li class="nav-item">
+              <a
+                class="nav-link {% if request.blueprint == 'home' %}active{% endif %}"
+                href="{{ url_for('home.index') }}"
+                >Home</a
+              >
+            </li>
+            {% endif %}
             <!-- Users menu -->
             {% if current_user.is_authenticated and
             current_user.has_permission(perm.USER_READ) %}
@@ -79,6 +89,13 @@
               >
             </li>
             {% endif %}
+            <li class="nav-item">
+              <a
+                class="nav-link {% if request.blueprint == 'tbl_cate' %}active{% endif %}"
+                href="{{ url_for('tbl_cate.index') }}"
+                >Categories</a
+              >
+            </li>
           </ul>
           <!--Auth section-->
           <ul class="navbar-nav ms-auto mb-2 mb-lg-0">

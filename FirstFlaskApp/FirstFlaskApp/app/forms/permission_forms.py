@@ -8,6 +8,7 @@ MODULE_CHOICES = [
     ("Users", "Users"),
     ("Roles", "Roles"),
     ("Permissions", "Permissions"),
+    ("Categories", "Categories"),
     ("System", "System"),
     ("Audit", "Audit"),
     ("General", "General")

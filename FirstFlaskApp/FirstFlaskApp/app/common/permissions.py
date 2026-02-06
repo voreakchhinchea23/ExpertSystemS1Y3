@@ -14,3 +14,8 @@ class Perm:
     PERM_CREATE = 'perm.create'
     PERM_UPDATE = 'perm.update'
     PERM_DELETE = 'perm.delete'
+    
+    CATE_READ = 'cate.read'
+    CATE_CREATE = 'cate.create'
+    CATE_UPDATE = 'cate.update'
+    CATE_DELETE = 'cate.delete'
