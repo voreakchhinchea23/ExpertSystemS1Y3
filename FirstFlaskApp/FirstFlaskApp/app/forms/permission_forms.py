@@ -10,6 +10,7 @@ MODULE_CHOICES = [
     ("Permissions", "Permissions"),
     ("Categories", "Categories"),
     ("Ingredients", "Ingredients"),
+    ("Dishes", "Dishes"),
     ("System", "System"),
     ("Audit", "Audit"),
     ("General", "General")

@@ -24,3 +24,8 @@ class Perm:
     INGREDIENT_CREATE = 'ingredient.create'
     INGREDIENT_UPDATE = 'ingredient.update'
     INGREDIENT_DELETE = 'ingredient.delete'
+    
+    DISH_READ = 'dish.read'
+    DISH_CREATE = 'dish.create'
+    DISH_UPDATE = 'dish.update'
+    DISH_DELETE = 'dish.delete'

@@ -12,10 +12,19 @@
       integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
       crossorigin="anonymous"
     />
+
     <script
       src="https://kit.fontawesome.com/0bf7fd8e93.js"
       crossorigin="anonymous"
     ></script>
+
+    <!-- Google font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bungee&family=Caveat:wght@400..700&family=Kantumruy+Pro:ital,wght@0,100..700;1,100..700&display=swap"
+      rel="stylesheet"
+    />
 
     <!-- Custom CSS-->
     <link
@@ -89,7 +98,8 @@
 
             {% endif %}
             <!--Categories-->
-            {% if current_user.is_authenticated and current_user.has_permission(perm.CATE_READ)%}
+            {% if current_user.is_authenticated and
+            current_user.has_permission(perm.CATE_READ)%}
             <li class="nav-item">
               <a
                 class="nav-link {% if request.blueprint == 'tbl_cate' %}active{% endif %}"
@@ -105,6 +115,16 @@
                 class="nav-link {% if request.blueprint == 'tbl_ingredient' %}active{% endif %}"
                 href="{{ url_for('tbl_ingredient.index') }}"
                 >Ingredients</a
+              >
+            </li>
+            {% endif %}
+            <!--Ingredient-->
+            {% if current_user.is_authenticated %}
+            <li class="nav-item">
+              <a
+                class="nav-link {% if request.blueprint == 'tbl_dish' %}active{% endif %}"
+                href="{{ url_for('tbl_dish.index') }}"
+                >Dishes</a
               >
             </li>
             {% endif %}

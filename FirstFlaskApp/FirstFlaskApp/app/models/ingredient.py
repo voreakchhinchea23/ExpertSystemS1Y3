@@ -1,5 +1,6 @@
 from extensions import db
 from datetime import datetime
+from app.models.associations import tbl_dish_ingredients
 
 class IngredientTable(db.Model):
     __tablename__ = "tbl_ingredients"
@@ -11,7 +12,7 @@ class IngredientTable(db.Model):
     updated_at = db.Column(db.DateTime, default=datetime.utcnow,onupdate=datetime.utcnow, nullable=False)
     
     category = db.relationship("CategoryTable", back_populates="ingredients")
-    #dishes = db.relationship("DishIngredientAssociation", back_populates="ingredient", cascade="all, delete-orphan")
+    dishes = db.relationship("DishTable",secondary=tbl_dish_ingredients, back_populates="ingredients")
     
     def __repr__(self):
         return f"<Ingredient {self.name} (id={self.id})>"

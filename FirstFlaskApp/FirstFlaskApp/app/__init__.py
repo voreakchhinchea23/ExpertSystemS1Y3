@@ -4,14 +4,25 @@ from extensions import db, csrf, login_manager
 from flask_login import LoginManager
 from app.models import UserTable
 from app.common.permissions import Perm
+from app.forms.dish_forms import get_ingredients_grouped_by_category
+import os
 
 def create_app(config_class: type[Config] = Config):
     app = Flask(__name__)
     app.config.from_object(config_class)
     
+    # Create upload folder if it doesn't exist
+    os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+    
     @app.context_processor
     def inject_permissions():
         return {'perm': Perm}
+    
+    # @app.context_processor
+    # def utility_processor():
+    #     return dict(
+    #         get_ingredients_grouped_by_category=get_ingredients_grouped_by_category
+    #     )
     
     db.init_app(app)
     csrf.init_app(app)
@@ -35,6 +46,7 @@ def create_app(config_class: type[Config] = Config):
     from app.routes.category_route import cate_bp
     from app.routes.dashboard_route import dashboard_bp
     from app.routes.ingredient_route import ingredient_bp
+    from app.routes.dish_route import dish_bp
     
     app.register_blueprint(user_bp)
     app.register_blueprint(auth_bp)
@@ -42,7 +54,8 @@ def create_app(config_class: type[Config] = Config):
     app.register_blueprint(perm_bp)
     app.register_blueprint(cate_bp)
     app.register_blueprint(dashboard_bp)
-    app. register_blueprint(ingredient_bp)
+    app.register_blueprint(ingredient_bp)
+    app.register_blueprint(dish_bp)
     
     # add this block so "/" goes to the users list
     @app.route("/")
@@ -51,7 +64,7 @@ def create_app(config_class: type[Config] = Config):
     
     # create tables
     with app.app_context():
-        from app.models import UserTable, RoleTable, PermissionTable, CategoryTable, IngredientTable # noqa: F401
+        from app.models import UserTable, RoleTable, PermissionTable, CategoryTable, IngredientTable, DishTable, RecipeTable # noqa: F401
         db.create_all()
         
     return app

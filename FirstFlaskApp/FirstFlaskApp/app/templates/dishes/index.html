@@ -1,0 +1,100 @@
+{% extends "layouts/base.html" %}
+{% block title %}Khmer Dishes{% endblock %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h1 class="h3 mb-0"><i class="fa-solid fa-bowl-food"></i> Khmer Dishes</h1>
+  
+  {% if current_user.is_authenticated and current_user.has_permission(perm.DISH_CREATE)%}
+  <a href="{{ url_for('tbl_dish.create') }}" class="btn btn-primary">
+    <i class="fa-solid fa-plus"></i> Create New Dish
+  </a>
+  {% endif %}
+</div>
+
+{% if dishes %}
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+  {% for dish in dishes %}
+  <div class="col">
+    <div class="card h-100 shadow-sm border-0">
+      {% if dish.image_filename %}
+      <img 
+        src="{{ url_for('static', filename='uploads/dishes/' + dish.image_filename) }}" 
+        class="card-img-top" 
+        alt="{{ dish.name }}" 
+        style="height: 200px; object-fit: cover;"
+      >
+      {% else %}
+      <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
+        <i class="fa-solid fa-bowl-food fa-3x text-muted"></i>
+      </div>
+      {% endif %}
+      
+      <div class="card-body">
+        <h5 class="card-title">
+          <a href="{{ url_for('tbl_dish.detail', dish_id=dish.id) }}" class="text-decoration-none text-dark">
+            {{ dish.name }}
+          </a>
+        </h5>
+        
+        <p class="card-text text-muted small">
+          {{ (dish.description or "No description available") | truncate(100) }}
+        </p>
+        
+        <p class="card-text small">
+          <strong>Ingredients:</strong>
+          {% if dish.ingredients.count() > 0 %}
+            {% for ing in dish.ingredients[:4] %}
+              {{ ing.name }}{% if not loop.last %}, {% endif %}
+            {% endfor %}
+            {% if dish.ingredients.count() > 4 %}...{% endif %}
+          {% else %}
+            None
+          {% endif %}
+        </p>
+      </div>
+      
+      <div class="card-footer bg-white border-0 text-end">
+        <a href="{{ url_for('tbl_dish.detail', dish_id=dish.id) }}" class="btn btn-sm btn-outline-primary">
+          <i class="fa-solid fa-eye"></i> View
+        </a>
+        
+        <!-- EDIT & DELETE buttons -->
+        {% if current_user.is_authenticated %}
+          {% if current_user.has_permission(perm.DISH_UPDATE) %}
+          <a href="{{ url_for('tbl_dish.edit', dish_id=dish.id) }}" 
+             class="btn btn-sm btn-outline-warning" 
+             title="Edit">
+            <i class="fa-solid fa-pencil"></i>
+          </a>
+          
+          {% endif %}
+          
+          {% if current_user.has_permission(perm.DISH_DELETE) %}
+            <a href="{{ url_for('tbl_dish.delete', dish_id=dish.id) }}" 
+             class="btn btn-sm btn-outline-danger" 
+             title="Delete">
+            <i class="fa-solid fa-trash"></i>
+          </a>
+          {% endif %}
+           
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+{% else %}
+<div class="alert alert-info text-center">
+  <p>No dishes found yet.</p>
+  {% if current_user.is_authenticated and current_user.has_permission(perm.DISH_CREATE) %}
+  <a href="{{ url_for('tbl_dish.create') }}" class="btn btn-primary">
+    Create the first dish
+  </a>
+  {% endif %}
+</div>
+{% endif %}
+
+{% endblock %}

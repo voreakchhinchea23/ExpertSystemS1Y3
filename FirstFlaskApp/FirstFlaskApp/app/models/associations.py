@@ -13,3 +13,8 @@ tbl_role_permissions = db.Table(
      db.Column("permission_id", db.Integer, db.ForeignKey("tbl_permissions.id"), primary_key=True)
 )
 
+tbl_dish_ingredients = db.Table(
+    "tbl_dish_ingredients",
+    db.Column("dish_id", db.Integer, db.ForeignKey("tbl_dishes.id"), primary_key=True),
+    db.Column("ingredient_id", db.Integer, db.ForeignKey("tbl_ingredients.id"), primary_key=True)
+)
