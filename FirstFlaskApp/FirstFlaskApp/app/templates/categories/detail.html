@@ -4,12 +4,12 @@ endblock %} {% block content %}
   <h1 class="h3 mb-0"><i class="fa-solid fa-circle-info"></i> Category Detail</h1>
   <div>
     <a
-      href="#"
+      href="{{ url_for('tbl_cate.edit', cate_id=category.id) }}"
       class="btn btn-sm btn-warning text-light"
       ><i class="fa-solid fa-pencil"></i>Edit</a
     >
     <a
-      href="#"
+      href="{{ url_for('tbl_cate.delete_confirm', cate_id=category.id) }}"
       class="btn btn-sm btn-danger"
       >Delete</a
     >

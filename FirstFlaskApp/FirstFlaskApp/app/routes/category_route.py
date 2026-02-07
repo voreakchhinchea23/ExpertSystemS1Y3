@@ -32,7 +32,7 @@ def create():
             "description" : form.description.data,
         }
         cate = CategoryService.create_category(data)
-        flash(f"Role '{cate.name}' was created successfully.", "success")
+        flash(f"Category '{cate.name}' was created successfully.", "success")
         return redirect(url_for("tbl_cate.index"))
     return render_template("categories/create.html", form=form)
 

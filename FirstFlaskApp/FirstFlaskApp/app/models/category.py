@@ -1,4 +1,3 @@
-from datetime import datetime
 from extensions import db
 
 class CategoryTable(db.Model):
@@ -9,7 +8,12 @@ class CategoryTable(db.Model):
     description = db.Column(db.Text, nullable=True)
     
     # Relationship to ingredients
-    #ingredients = db.relationship("IngredientTable", back_populates="category", cascade="all, delete-orphan")
+    ingredients = db.relationship(
+        "IngredientTable",
+        back_populates="category",
+        cascade="all, delete-orphan",
+        lazy="select"  
+    )
     
     def __repr__(self):
         return f"<Category {self.name}>"

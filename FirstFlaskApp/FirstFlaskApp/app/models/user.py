@@ -4,7 +4,6 @@ from flask_login import UserMixin
 from extensions import db
 from app.models.associations import tbl_user_roles
 
-from extensions import db
 
 class UserTable(UserMixin,db.Model):
     __tablename__ = "tbl_users"

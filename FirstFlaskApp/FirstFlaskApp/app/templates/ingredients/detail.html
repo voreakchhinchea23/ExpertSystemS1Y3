@@ -1,0 +1,31 @@
+{% extends "layouts/base.html" %} {% block title %}Ingredient {{ ingredient.name }}{%
+endblock %} {% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h1 class="h3 mb-0"><i class="fa-solid fa-circle-info"></i> Ingredient Detail</h1>
+  <div>
+    <a
+      href="{{ url_for('tbl_ingredient.edit', ingredient_id=ingredient.id) }}"
+      class="btn btn-sm btn-warning text-light"
+      ><i class="fa-solid fa-pencil"></i>Edit</a
+    >
+    <a
+      href="{{ url_for('tbl_ingredient.delete_confirm', ingredient_id=ingredient.id) }}"
+      class="btn btn-sm btn-danger"
+      >Delete</a
+    >
+    <a
+      href="{{ url_for('tbl_ingredient.index') }}"
+      class="btn btn-sm btn-outline-secondary"
+      >Back to list</a
+    >
+  </div>
+</div>
+
+<div class="card mb-3">
+  <div class="card-body">
+    <p><strong>Name:</strong> {{ ingredient.name }}</p>
+    <p><strong>Category:</strong> {{ ingredient.category.name }}</p>
+    </p>
+  </div>
+</div>
+{% endblock %}

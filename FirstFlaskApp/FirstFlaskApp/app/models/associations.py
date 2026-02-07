@@ -12,3 +12,4 @@ tbl_role_permissions = db.Table(
      db.Column("role_id", db.Integer, db.ForeignKey("tbl_roles.id"), primary_key=True),
      db.Column("permission_id", db.Integer, db.ForeignKey("tbl_permissions.id"), primary_key=True)
 )
+

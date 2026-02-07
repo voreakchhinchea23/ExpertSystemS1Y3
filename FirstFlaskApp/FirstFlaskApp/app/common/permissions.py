@@ -19,3 +19,8 @@ class Perm:
     CATE_CREATE = 'cate.create'
     CATE_UPDATE = 'cate.update'
     CATE_DELETE = 'cate.delete'
+
+    INGREDIENT_READ = 'ingredient.read'
+    INGREDIENT_CREATE = 'ingredient.create'
+    INGREDIENT_UPDATE = 'ingredient.update'
+    INGREDIENT_DELETE = 'ingredient.delete'

@@ -8,7 +8,7 @@ class CategoryCreateForm(FlaskForm):
     name = StringField(
         "Name",
         validators=[DataRequired(), Length(min=1, max=50)],
-        render_kw={"placeholder": "ត្រី, សាច់..."}
+        render_kw={"placeholder": "បញ្ចូលប្រភេទគ្រឿងផ្សំ"}
     )
     description = TextAreaField(
         "Description",
