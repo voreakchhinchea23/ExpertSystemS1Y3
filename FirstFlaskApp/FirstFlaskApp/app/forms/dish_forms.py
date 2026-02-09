@@ -1,8 +1,8 @@
 # app/forms/dish_forms.py
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
-from wtforms import StringField, TextAreaField, SubmitField
-from wtforms.validators import DataRequired, Length, Optional, ValidationError
+from wtforms import FloatField, StringField, TextAreaField, SubmitField
+from wtforms.validators import DataRequired, Length, Optional, ValidationError,NumberRange
 from app.models import IngredientTable, DishTable, CategoryTable
 from extensions import db
 from collections import defaultdict
@@ -60,6 +60,12 @@ class DishCreateForm(FlaskForm):
         validators=[DataRequired(), Length(min=30)],
         render_kw={"rows": 10}
     )
+    confidence = FloatField(
+        "Confidence (0.0 - 1.0)",
+        validators=[DataRequired(), NumberRange(min=0.0, max=1.0)],
+        default=0.8,
+        render_kw={"step": "0.05"}
+    )
     tips = TextAreaField("Tips", render_kw={"rows": 4})
     warnings = TextAreaField("Warnings", render_kw={"rows": 4})
     notes = TextAreaField("Notes", render_kw={"rows": 4})
@@ -87,6 +93,12 @@ class DishEditForm(FlaskForm):
     description = TextAreaField("Description")
     ingredients = MultiCheckboxField("Ingredients", coerce=int)
     recipe_text = TextAreaField("Recipe Instructions", validators=[DataRequired(), Length(min=30)], render_kw={"rows": 10})
+    confidence = FloatField(
+        "Confidence (0.0 - 1.0)",
+        validators=[DataRequired(), NumberRange(min=0.0, max=1.0)],
+        default=0.8,
+        render_kw={"step": "0.05"}
+    )
     tips = TextAreaField("Tips", render_kw={"rows": 4})
     warnings = TextAreaField("Warnings", render_kw={"rows": 4})
     notes = TextAreaField("Notes", render_kw={"rows": 4})
@@ -103,6 +115,7 @@ class DishEditForm(FlaskForm):
             self.name.data = dish.name
             self.description.data = dish.description
             self.ingredients.data = [ing.id for ing in dish.ingredients]
+            self.confidence.data = dish.confidence
             if dish.recipe:
                 self.recipe_text.data = dish.recipe.recipe_text
                 self.tips.data = dish.recipe.tips

@@ -10,6 +10,7 @@ class DishTable(db.Model):
     description = db.Column(db.Text, nullable=True) # short description
     image_filename = db.Column(db.String(255), nullable=True)   
     image_mimetype = db.Column(db.String(100), nullable=True)
+    confidence = db.Column(db.Float, nullable=False, default=0.8)
 
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)

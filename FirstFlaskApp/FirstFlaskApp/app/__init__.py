@@ -1,11 +1,12 @@
 from flask import Flask, redirect, url_for
 from config import Config
-from extensions import db, csrf, login_manager
+from extensions import db, csrf, login_manager, migrate
 from flask_login import LoginManager
 from app.models import UserTable
 from app.common.permissions import Perm
 from app.forms.dish_forms import get_ingredients_grouped_by_category
 import os
+
 
 def create_app(config_class: type[Config] = Config):
     app = Flask(__name__)
@@ -27,6 +28,7 @@ def create_app(config_class: type[Config] = Config):
     db.init_app(app)
     csrf.init_app(app)
     login_manager.init_app(app)
+    migrate.init_app(app, db)
     
     #optional settings
     login_manager.login_view = "auth.login"
@@ -56,6 +58,7 @@ def create_app(config_class: type[Config] = Config):
     app.register_blueprint(dashboard_bp)
     app.register_blueprint(ingredient_bp)
     app.register_blueprint(dish_bp)
+    
     
     # add this block so "/" goes to the users list
     @app.route("/")

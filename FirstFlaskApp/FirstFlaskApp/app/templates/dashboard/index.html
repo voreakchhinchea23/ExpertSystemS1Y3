@@ -1,4 +1,97 @@
-{% extends "layouts/base.html" %} {% block title %}Dashboard{%
-endblock %} {% block content %}
-<h1>Welcome to Home</h1>
+{% extends "layouts/base.html" %}
+{% block title %}Khmer Recipe Expert System{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+  <h1 class="text-center mb-4"><i class="fa-solid fa-bowl-food"></i> Khmer Recipe Expert</h1>
+  <p class="lead text-center mb-5">
+    Select the ingredients you have available — the system will suggest the most likely matching dishes with confidence scores.
+  </p>
+
+  <form method="POST">
+    {{ form.hidden_tag() }}  <!-- This line fixes the CSRF error -->
+
+    <div class="card shadow-lg mb-5">
+      <div class="card-header bg-primary text-white">
+        <h5 class="mb-0">Select Your Available Ingredients</h5>
+      </div>
+      <div class="card-body">
+        {% for cat, items in grouped_ingredients.items() %}
+        <div class="border rounded p-3 mb-3">
+          <div class="fw-bold mb-2">{{ cat }}</div>
+          <div class="row">
+            {% for ing in items %}
+            <div class="col-6 col-md-4 mb-2">
+              <div class="form-check">
+                <input
+                  type="checkbox"
+                  class="form-check-input"
+                  id="ing_{{ ing.id }}"
+                  name="{{ form.ingredients.name }}"
+                  value="{{ ing.id }}"
+                  {% if ing.id in selected_ids %}checked{% endif %}
+                />
+                <label class="form-check-label" for="ing_{{ ing.id }}">
+                  {{ ing.name }}
+                </label>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+        {% endfor %}
+
+        {% for e in form.ingredients.errors %}
+          <div class="text-danger small mt-2">{{ e }}</div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="text-center">
+      {{ form.submit(class="btn btn-primary btn-lg px-5") }}
+    </div>
+  </form>
+
+  {% if results %}
+  <h3 class="text-center mt-5">Most Likely Dishes (Confidence ≥ 70%)</h3>
+  <div class="row mt-4">
+    {% for dish, percentage, matched, total in results %}
+    <div class="col-md-6 col-lg-4 mb-4">
+      <div class="card h-100 shadow">
+        {% if dish.image_filename %}
+        <img 
+          src="{{ url_for('static', filename='uploads/dishes/' + dish.image_filename) }}" 
+          class="card-img-top" 
+          alt="{{ dish.name }}" 
+          style="height: 180px; object-fit: cover;"
+        >
+        {% endif %}
+        <div class="card-body">
+          <h5 class="card-title">
+            {{ dish.name }} <span class="badge bg-success ms-2">{{ percentage }}%</span>
+          </h5>
+          <p class="card-text text-muted small">
+            {{ (dish.description or "No description available") | truncate(100) }}
+          </p>
+          <p class="small text-center mb-0">
+            Matched <strong>{{ matched }}</strong> out of <strong>{{ total }}</strong> ingredients
+          </p>
+        </div>
+        <div class="card-footer text-center bg-white">
+          <a href="{{ url_for('tbl_dish.detail', dish_id=dish.id) }}" class="btn btn-outline-primary btn-sm">
+            View Full Recipe
+          </a>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% elif request.method == "POST" %}
+  <div class="alert alert-info text-center mt-5">
+    No dishes matched with ≥70% confidence. Try selecting more ingredients!
+  </div>
+  {% endif %}
+</div>
+
 {% endblock %}

@@ -46,6 +46,13 @@
             <div class="text-danger small">{{ e }}</div>
         {% endfor %}
     </div>
+    
+    <div class="mb-3">
+    {{ form.confidence.label(class="form-label") }}
+    {{ form.confidence(class="form-control") }}
+    <small class="text-muted">How confident are you that these ingredients make this dish? (default 80%)</small>
+    {% for e in form.confidence.errors %}<div class="text-danger small">{{ e }}</div>{% endfor %}
+    </div>
 
     <div class="mb-3">
         {{ form.recipe_text.label(class="form-label") }}
