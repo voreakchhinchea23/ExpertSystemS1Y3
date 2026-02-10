@@ -72,7 +72,7 @@
               >
             </li>
             {% endif %}
-
+            
             <!-- Roles menu -->
             {% if current_user.is_authenticated and
             current_user.has_permission(perm.ROLE_READ) %}
@@ -84,7 +84,6 @@
               >
             </li>
             {% endif %}
-
             <!-- Permissions menu -->
             {% if current_user.is_authenticated and
             current_user.has_permission(perm.PERM_READ) %}
@@ -95,8 +94,8 @@
                 >Permissions</a
               >
             </li>
-
             {% endif %}
+
             <!--Categories-->
             {% if current_user.is_authenticated and
             current_user.has_permission(perm.CATE_READ)%}
@@ -109,7 +108,8 @@
             </li>
             {% endif %}
             <!--Ingredient-->
-            {% if current_user.is_authenticated %}
+            {% if current_user.is_authenticated and
+            current_user.has_permission(perm.INGREDIENT_READ)%}
             <li class="nav-item">
               <a
                 class="nav-link {% if request.blueprint == 'tbl_ingredient' %}active{% endif %}"
@@ -118,8 +118,9 @@
               >
             </li>
             {% endif %}
-            <!--Ingredient-->
-            {% if current_user.is_authenticated %}
+            <!--Dishes-->
+            {% if current_user.is_authenticated and
+            current_user.has_permission(perm.DISH_READ) %}
             <li class="nav-item">
               <a
                 class="nav-link {% if request.blueprint == 'tbl_dish' %}active{% endif %}"

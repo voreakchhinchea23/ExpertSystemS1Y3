@@ -6,18 +6,25 @@ from extensions import db
 
 def calculate_combined_cf(match_ratio: float, dish_confidence: float) -> float:
     """
-    Combine match ratio with dish confidence using teacher's style:
-    combined = match_ratio + dish_confidence × (1 - match_ratio)
-    Caps at 1.0 (never 100%)
+    Combine match ratio with dish confidence using simple multiplication.
+    
+    Formula: match_ratio × dish_confidence
+    
+    Examples:
+    - 2/12 ingredients (16.7%) × 0.8 = 13.4% ✓ (realistic!)
+    - 6/12 ingredients (50%) × 0.8 = 40% ✓
+    - 12/12 ingredients (100%) × 0.8 = 80% ✓ (perfect match!)
     """
-    combined = match_ratio + dish_confidence * (1 - match_ratio)
-    return min(combined, 1.0)
+    return match_ratio * dish_confidence
 
 
-def find_matching_dishes(selected_ingredient_ids: List[int], min_confidence: float = 0.7) -> List[Tuple[DishTable, float, int, int]]:
+def run_inference(selected_ingredient_ids: List[int], min_confidence: float = 0.3) -> List[Tuple[DishTable, float, int, int]]:
     """
-    Find matching dishes and calculate confidence.
-    Only include dishes with at least 1 matched ingredient.
+    Inference engine: finds and ranks matching dishes using selected ingredients and per-dish confidence.
+    Returns: [(dish, percentage, matched_count, total_ingredients), ...]
+    Sorted by confidence descending
+    
+    Note: min_confidence lowered to 0.3 (30%) because new formula is more realistic
     """
     if not selected_ingredient_ids:
         return []
@@ -36,7 +43,7 @@ def find_matching_dishes(selected_ingredient_ids: List[int], min_confidence: flo
 
         matched = sum(1 for ing in dish.ingredients if ing.id in selected_set)
 
-        # IMPORTANT: Skip if ZERO ingredients match
+        # Skip if ZERO ingredients match
         if matched == 0:
             continue
 

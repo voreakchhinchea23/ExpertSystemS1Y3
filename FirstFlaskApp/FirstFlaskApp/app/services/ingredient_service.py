@@ -5,7 +5,7 @@ from extensions import db
 class IngredientService:
     @staticmethod
     def get_all_ingredients() -> List[IngredientTable]:
-        return IngredientTable.query.order_by(IngredientTable.id.asc()).all()
+        return IngredientTable.query.order_by(IngredientTable.name.asc()).all()
     
     @staticmethod
     def get_ingredient_by_id(ingredient_id: int) -> Optional[IngredientTable]:

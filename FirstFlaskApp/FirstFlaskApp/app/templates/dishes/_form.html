@@ -1,94 +1,124 @@
 <form method="POST" enctype="multipart/form-data">
-    {{ form.hidden_tag() }}
+  {{ form.hidden_tag() }}
 
-    <div class="mb-3">
-        {{ form.name.label(class="form-label") }}
-        {{ form.name(class="form-control") }}
-        {% for e in form.name.errors %}<div class="text-danger small">{{ e }}</div>{% endfor %}
-    </div>
+  <div class="mb-3">
+    {{ form.name.label(class="form-label") }} {{ form.name(class="form-control")
+    }} {% for e in form.name.errors %}
+    <div class="text-danger small">{{ e }}</div>
+    {% endfor %}
+  </div>
 
-    <div class="mb-3">
-        {{ form.description.label(class="form-label") }}
-        {{ form.description(class="form-control") }}
-        {% for e in form.description.errors %}<div class="text-danger small">{{ e }}</div>{% endfor %}
-    </div>
+  <div class="mb-3">
+    {{ form.description.label(class="form-label") }} {{
+    form.description(class="form-control") }} {% for e in
+    form.description.errors %}
+    <div class="text-danger small">{{ e }}</div>
+    {% endfor %}
+  </div>
 
-    <div class="mb-4">
-        <label class="form-label">{{ form.ingredients.label.text }}</label>
+  <div class="mb-4">
+    <label class="form-label">{{ form.ingredients.label.text }}</label>
 
-        {% if form.grouped_ingredients %}
-            {% for cat, items in form.grouped_ingredients.items() %}
-            <div class="border rounded p-3 mb-3">
-                <div class="fw-bold mb-2">{{ cat }}</div>
+    {% set grouped = grouped_ingredients %} {% if grouped %} {% for cat, items
+    in grouped.items() %}
+    <div class="border rounded p-3 mb-4 shadow-sm">
+      <div class="fw-bold mb-3 text-primary">
+        {{ cat }} ({{ items|length }})
+      </div>
 
-                {% for ing in items %}
-                <div class="form-check">
-                    <input
-                        type="checkbox"
-                        class="form-check-input"
-                        id="ing_{{ ing.id }}"
-                        name="{{ form.ingredients.name }}"
-                        value="{{ ing.id }}"
-                        {% if form.ingredients.data and ing.id in form.ingredients.data %}checked{% endif %}
-                    />
-                    <label class="form-check-label" for="ing_{{ ing.id }}">
-                        {{ ing.name }}
-                    </label>
-                </div>
-                {% endfor %}
-            </div>
-            {% endfor %}
-        {% else %}
-            <p class="text-muted small">No ingredients available.</p>
-        {% endif %}
-
-        {% for e in form.ingredients.errors %}
-            <div class="text-danger small">{{ e }}</div>
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-3">
+        {% for ing in items %}
+        <div class="col">
+          <div class="form-check">
+            <input
+              type="checkbox"
+              class="form-check-input"
+              id="ing_{{ ing.id }}"
+              name="{{ form.ingredients.name }}"
+              value="{{ ing.id }}"
+              {%
+              if
+              form.ingredients.data
+              and
+              ing.id
+              in
+              form.ingredients.data
+              %}checked{%
+              endif
+              %}
+            />
+            <label class="form-check-label" for="ing_{{ ing.id }}">
+              {{ ing.name }}
+            </label>
+          </div>
+        </div>
         {% endfor %}
+      </div>
     </div>
-    
-    <div class="mb-3">
-    {{ form.confidence.label(class="form-label") }}
-    {{ form.confidence(class="form-control") }}
-    <small class="text-muted">How confident are you that these ingredients make this dish? (default 80%)</small>
-    {% for e in form.confidence.errors %}<div class="text-danger small">{{ e }}</div>{% endfor %}
-    </div>
+    {% endfor %} {% else %}
+    <p class="text-muted small">
+      No ingredients available yet. Please add some first.
+    </p>
+    {% endif %} {% for e in form.ingredients.errors %}
+    <div class="text-danger small mt-2">{{ e }}</div>
+    {% endfor %}
+  </div>
 
-    <div class="mb-3">
-        {{ form.recipe_text.label(class="form-label") }}
-        {{ form.recipe_text(class="form-control", rows=10) }}
-        {% for e in form.recipe_text.errors %}<div class="text-danger small">{{ e }}</div>{% endfor %}
-    </div>
+  <div class="mb-3">
+    {{ form.confidence.label(class="form-label") }} {{
+    form.confidence(class="form-control") }}
+    <small class="text-muted"
+      >How confident are you that these ingredients make this dish? (default
+      80%)</small
+    >
+    {% for e in form.confidence.errors %}
+    <div class="text-danger small">{{ e }}</div>
+    {% endfor %}
+  </div>
 
-    <div class="mb-3">
-        {{ form.tips.label(class="form-label") }}
-        {{ form.tips(class="form-control", rows=4) }}
-    </div>
+  <div class="mb-3">
+    {{ form.recipe_text.label(class="form-label") }} {{
+    form.recipe_text(class="form-control", rows=10) }} {% for e in
+    form.recipe_text.errors %}
+    <div class="text-danger small">{{ e }}</div>
+    {% endfor %}
+  </div>
 
-    <div class="mb-3">
-        {{ form.warnings.label(class="form-label") }}
-        {{ form.warnings(class="form-control", rows=4) }}
-    </div>
+  <div class="mb-3">
+    {{ form.tips.label(class="form-label") }} {{ form.tips(class="form-control",
+    rows=4) }}
+  </div>
 
-    <div class="mb-3">
-        {{ form.notes.label(class="form-label") }}
-        {{ form.notes(class="form-control", rows=4) }}
-    </div>
+  <div class="mb-3">
+    {{ form.warnings.label(class="form-label") }} {{
+    form.warnings(class="form-control", rows=4) }}
+  </div>
 
-    <div class="mb-3">
-        {{ form.image.label(class="form-label") }}
-        {{ form.image(class="form-control") }}
-        {% if dish and dish.image_filename %}
-            <div class="mt-2">
-                <img src="{{ url_for('static', filename='uploads/dishes/' + dish.image_filename) }}" alt="Current" style="max-height:200px;">
-                <small>Current image</small>
-            </div>
-        {% endif %}
-        {% for e in form.image.errors %}<div class="text-danger small">{{ e }}</div>{% endfor %}
-    </div>
+  <div class="mb-3">
+    {{ form.notes.label(class="form-label") }} {{
+    form.notes(class="form-control", rows=4) }}
+  </div>
 
-    <div class="mt-4">
-        {{ form.submit(class="btn btn-primary") }}
-        <a href="{{ url_for('tbl_dish.index') }}" class="btn btn-outline-secondary">Cancel</a>
+  <div class="mb-3">
+    {{ form.image.label(class="form-label") }} {{
+    form.image(class="form-control") }} {% if dish and dish.image_filename %}
+    <div class="mt-2">
+      <img
+        src="{{ url_for('static', filename='uploads/dishes/' + dish.image_filename) }}"
+        alt="Current"
+        style="max-height: 200px"
+      />
+      <small>Current image</small>
     </div>
+    {% endif %} {% for e in form.image.errors %}
+    <div class="text-danger small">{{ e }}</div>
+    {% endfor %}
+  </div>
+
+  <div class="mt-4">
+    {{ form.submit(class="btn btn-primary") }}
+    <a href="{{ url_for('tbl_dish.index') }}" class="btn btn-outline-secondary"
+      >Cancel</a
+    >
+  </div>
 </form>

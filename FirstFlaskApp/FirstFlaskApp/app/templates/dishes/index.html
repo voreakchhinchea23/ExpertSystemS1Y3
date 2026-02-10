@@ -38,12 +38,8 @@
           </a>
         </h5>
         
-        <p class="card-text text-muted small">
-          {{ (dish.description or "No description available") | truncate(100) }}
-        </p>
-        
         <p class="card-text small">
-          <strong>Ingredients:</strong>
+          <strong>គ្រឿងផ្សំ:</strong>
           {% if dish.ingredients.count() > 0 %}
             {% for ing in dish.ingredients[:4] %}
               {{ ing.name }}{% if not loop.last %}, {% endif %}

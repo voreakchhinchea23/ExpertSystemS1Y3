@@ -3,7 +3,7 @@ endblock %} {% block content %}
 <div class="d-flex justify-content-between align-items-center mb-4">
   <h1 class="h3 mb-0"><i class="fa-solid fa-users"></i> Users</h1>
 
-  {% if current_user.has_permission('user.create') %}
+  {% if current_user.has_permission(perm.USER_CREATE) %}
   <a href="{{ url_for('tbl_users.create') }}" class="btn btn-primary">
     <i class="fa-solid fa-user-plus"></i> New User
   </a>
@@ -63,15 +63,15 @@ endblock %} {% block content %}
 
         <td class="text-end">
           <!--Edit-->
-          {% if current_user.has_permission('user.update') %}
+          {% if current_user.has_permission(perm.USER_UPDATE) %}
           <a href="{{ url_for('tbl_users.edit', user_id=user.id) }}"
              class="btn btn-sm btn-warning rounded-circle text-light"
              title="Edit">
             <i class="fa-solid fa-pencil"></i>
           </a>
           {% endif %}
-          <!--Delete (go to custom delete confirmation page)-->
-          {% if current_user.has_permission('user.delete') %}
+          <!--Delete-->
+          {% if current_user.has_permission(perm.USER_DELETE) %}
           <a href="{{ url_for('tbl_users.delete_confirm', user_id=user.id) }}"
              class="btn btn-sm btn-danger rounded-circle"
              title="Delete">
@@ -90,7 +90,7 @@ endblock %} {% block content %}
 {% else %}
 <div class="alert alert-info">
   No user found.
-  {% if current_user.has_permission('user.create') %}
+  {% if current_user.has_permission(perm.USER_CREATE) %}
   <a href="{{ url_for('tbl_users.create') }}">Create the first user</a>
   {% endif %}
 </div>

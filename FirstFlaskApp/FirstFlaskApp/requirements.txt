@@ -5,3 +5,8 @@ email-validator==2.1.0.post1
 Werkzeug==2.3.7
 Flask-SQLAlchemy==3.1.1
 Flask-Login==0.6.3
+Flask-Migrate
+mysqlclient
+pymysql
+python-dotenv
+cryptography

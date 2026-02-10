@@ -10,7 +10,7 @@ class DishService:
     @staticmethod
     def get_all_dishes() -> List[DishTable]:
         """Return all dishes, ordered by ID ascending."""
-        return DishTable.query.order_by(DishTable.id.asc()).all()
+        return DishTable.query.order_by(DishTable.name.asc()).all()
 
     @staticmethod
     def get_dish_by_id(dish_id: int) -> Optional[DishTable]:

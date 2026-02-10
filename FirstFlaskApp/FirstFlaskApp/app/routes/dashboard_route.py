@@ -2,7 +2,7 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import current_user
 from app.models import DishTable, IngredientTable, CategoryTable
-from app.services.expert_system import find_matching_dishes
+from app.services.expert_system import run_inference
 from app.common.permissions import Perm
 from collections import defaultdict
 from app.forms.expert_form import ExpertIngredientForm
@@ -34,7 +34,7 @@ def index():
         elif len(form.ingredients.data) > 20:
             flash("Maximum 20 ingredients allowed.", "warning")
         else:
-            results = find_matching_dishes(selected_ids, min_confidence=0.7)
+            results = run_inference(selected_ids, min_confidence=0.3)
 
     return render_template(
         "dashboard/index.html",

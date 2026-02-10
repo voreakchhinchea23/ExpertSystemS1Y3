@@ -9,7 +9,7 @@ class ExpertIngredientForm(FlaskForm):
         validators=[Optional()]  
     )
     
-    submit = SubmitField("Find Matching Dishes")
+    submit = SubmitField("ស្វែងរកមុខម្ហូប")
     
     def validate_ingredients(self, field):
         if len(field.data) > 20:
