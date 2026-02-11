@@ -70,7 +70,7 @@ class DishCreateForm(FlaskForm):
     warnings = TextAreaField("Warnings", render_kw={"rows": 4})
     notes = TextAreaField("Notes", render_kw={"rows": 4})
     image = FileField(
-        "Dish Image (optional)",
+        "Dish Image",
         validators=[FileAllowed(['jpg', 'jpeg', 'png', 'gif'])]
     )
     submit = SubmitField("Save")
@@ -102,7 +102,7 @@ class DishEditForm(FlaskForm):
     tips = TextAreaField("Tips", render_kw={"rows": 4})
     warnings = TextAreaField("Warnings", render_kw={"rows": 4})
     notes = TextAreaField("Notes", render_kw={"rows": 4})
-    image = FileField("Dish Image (optional)", validators=[FileAllowed(['jpg', 'jpeg', 'png', 'gif'])])
+    image = FileField("Dish Image", validators=[FileAllowed(['jpg', 'jpeg', 'png', 'gif'])])
     submit = SubmitField("Update")
 
     def __init__(self, dish=None, *args, **kwargs):

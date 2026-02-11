@@ -4,55 +4,57 @@ from app.models import DishTable
 from extensions import db
 
 
-def calculate_combined_cf(match_ratio: float, dish_confidence: float) -> float:
+class RecipeRule:
     """
-    Combine match ratio with dish confidence using simple multiplication.
-    
-    Formula: match_ratio × dish_confidence
-    
-    Examples:
-    - 2/12 ingredients (16.7%) × 0.8 = 13.4% ✓ (realistic!)
-    - 6/12 ingredients (50%) × 0.8 = 40% ✓
-    - 12/12 ingredients (100%) × 0.8 = 80% ✓ (perfect match!)
+    Wraps a DishTable object for inference.
     """
-    return match_ratio * dish_confidence
+    def __init__(self, dish: DishTable):
+        self.dish = dish
+        self.rule_id = dish.id
+        self.title = dish.name
+        self.description = dish.description or ""
+        self.ingredients = list(dish.ingredients) 
+        self.solution = dish.recipe.recipe_text if dish.recipe else ""
+        self.confidence = dish.confidence  # default 0.8 
+
+    def match_count(self, selected_ingredient_ids: set) -> int:
+        return sum(1 for ing in self.ingredients if ing.id in selected_ingredient_ids)
 
 
-def run_inference(selected_ingredient_ids: List[int], min_confidence: float = 0.3) -> List[Tuple[DishTable, float, int, int]]:
-    """
-    Inference engine: finds and ranks matching dishes using selected ingredients and per-dish confidence.
-    Returns: [(dish, percentage, matched_count, total_ingredients), ...]
-    Sorted by confidence descending
-    
-    Note: min_confidence lowered to 0.3 (30%) because new formula is more realistic
-    """
-    if not selected_ingredient_ids:
-        return []
+class InferenceEngine:
+    def __init__(self):
+        self.rules: List[RecipeRule] = []
+        self.load_rules()
 
-    selected_set = set(selected_ingredient_ids)
-    dishes = db.session.query(DishTable).all()
-    results = []
+    def load_rules(self):
+        """Load all dishes from database as RecipeRule objects"""
+        dishes = db.session.query(DishTable).all()
+        self.rules = [RecipeRule(dish) for dish in dishes if dish.ingredients]
 
-    for dish in dishes:
-        if not dish.ingredients:
-            continue
+    def diagnose(self, selected_ingredient_ids: List[int], min_confidence: float = 0.45) -> List[Tuple[DishTable, float, int, int]]:
 
-        total = dish.ingredients.count()
-        if total == 0:
-            continue
+        if not selected_ingredient_ids:
+            return []
 
-        matched = sum(1 for ing in dish.ingredients if ing.id in selected_set)
+        selected_set = set(selected_ingredient_ids)
+        matches = []
 
-        # Skip if ZERO ingredients match
-        if matched == 0:
-            continue
+        for rule in self.rules:
+            total = len(rule.ingredients)
+            if total == 0:
+                continue
 
-        match_ratio = matched / total
-        combined_cf = calculate_combined_cf(match_ratio, dish.confidence)
-        percentage = round(combined_cf * 100, 1)
+            matched = rule.match_count(selected_set)
+            if matched == 0:
+                continue
 
-        if combined_cf >= min_confidence:
-            results.append((dish, percentage, matched, total))
+            match_ratio = matched / total
+            confidence = rule.confidence * match_ratio
+            percentage = round(confidence * 100, 1)
 
-    results.sort(key=lambda x: x[1], reverse=True)
-    return results
+            if confidence >= min_confidence:
+                matches.append((rule.dish, percentage, matched, total))
+
+        # Sort by confidence descending
+        matches.sort(key=lambda x: x[1], reverse=True)
+        return matches

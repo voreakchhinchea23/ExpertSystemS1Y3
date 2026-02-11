@@ -1,180 +1,149 @@
 <!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{% block title %}User Management{% endblock %}</title>
+<html lang="km">
 
-    <!--Boostrap 5 CSS-->
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
-      crossorigin="anonymous"
-    />
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}Khmer Dish - Expert System{% endblock %}</title>
 
-    <script
-      src="https://kit.fontawesome.com/0bf7fd8e93.js"
-      crossorigin="anonymous"
-    ></script>
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- Google font -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Bungee&family=Caveat:wght@400..700&family=Kantumruy+Pro:ital,wght@0,100..700;1,100..700&display=swap"
-      rel="stylesheet"
-    />
+  <!-- FontAwesome -->
+  <script src="https://kit.fontawesome.com/0bf7fd8e93.js" crossorigin="anonymous"></script>
 
-    <!-- Custom CSS-->
+  <!-- Khmer Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@300;400;600;700&display=swap"
+    rel="stylesheet">
+
+  <!-- Custom CSS-->
     <link
       rel="stylesheet"
       href="{{ url_for('static', filename='css/style.css') }}"
     />
     {% block extra_css %}{% endblock %}
-  </head>
-  <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
-      <div class="container-fluid">
-        <a class="navbar-brand" href="#">
-          <i class="fa-solid fa-ghost"></i>RBAC Demo
-        </a>
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarMain"
-          aria-controls="navbarMain"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
 
-        <div class="collapse navbar-collapse" id="navbarMain">
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <!-- Home Dashboard-->
-            <li class="nav-item">
-              <a
-                class="nav-link {% if request.blueprint == 'dashboard' %}active{% endif %}"
-                href="{{ url_for('dashboard.index') }}"
-                >Dashboard</a
-              >
-            </li>
-            <!-- Users menu -->
-            {% if current_user.is_authenticated and
-            current_user.has_permission(perm.USER_READ) %}
-            <li class="nav-item">
-              <a
-                class="nav-link {% if request.blueprint == 'tbl_users' %}active{% endif %}"
-                href="{{ url_for('tbl_users.index') }}"
-                >Users</a
-              >
-            </li>
-            {% endif %}
-            
-            <!-- Roles menu -->
-            {% if current_user.is_authenticated and
-            current_user.has_permission(perm.ROLE_READ) %}
-            <li class="nav-item">
-              <a
-                class="nav-link {% if request.blueprint == 'tbl_roles' %}active{% endif %}"
-                href="{{ url_for('tbl_roles.index') }}"
-                >Roles</a
-              >
-            </li>
-            {% endif %}
-            <!-- Permissions menu -->
-            {% if current_user.is_authenticated and
-            current_user.has_permission(perm.PERM_READ) %}
-            <li class="nav-item">
-              <a
-                class="nav-link {% if request.blueprint == 'tbl_perms' %}active{% endif %}"
-                href="{{ url_for('tbl_perms.index') }}"
-                >Permissions</a
-              >
-            </li>
-            {% endif %}
+</head>
 
-            <!--Categories-->
-            {% if current_user.is_authenticated and
-            current_user.has_permission(perm.CATE_READ)%}
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar navbar-expand-lg navbar-dark shadow-sm mb-4">
+    <div class="container-fluid">
+
+      <a class="navbar-brand text-white" href="{{ url_for('dashboard.index') }}">
+        <i class="fa-solid fa-utensils me-1"></i> Khmer Dish - Expert System
+      </a>
+
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarMain">
+
+        <!-- LEFT MENU -->
+        <ul class="navbar-nav me-auto">
+
+          <li class="nav-item">
+            <a class="nav-link text-white {% if request.blueprint == 'dashboard' %}active{% endif %}"
+              href="{{ url_for('dashboard.index') }}">
+              ទំព័រដើម
+            </a>
+          </li>
+          {% if current_user.is_authenticated %}
             <li class="nav-item">
-              <a
-                class="nav-link {% if request.blueprint == 'tbl_cate' %}active{% endif %}"
-                href="{{ url_for('tbl_cate.index') }}"
-                >Categories</a
-              >
-            </li>
-            {% endif %}
-            <!--Ingredient-->
-            {% if current_user.is_authenticated and
-            current_user.has_permission(perm.INGREDIENT_READ)%}
-            <li class="nav-item">
-              <a
-                class="nav-link {% if request.blueprint == 'tbl_ingredient' %}active{% endif %}"
-                href="{{ url_for('tbl_ingredient.index') }}"
-                >Ingredients</a
-              >
-            </li>
-            {% endif %}
-            <!--Dishes-->
-            {% if current_user.is_authenticated and
-            current_user.has_permission(perm.DISH_READ) %}
-            <li class="nav-item">
-              <a
-                class="nav-link {% if request.blueprint == 'tbl_dish' %}active{% endif %}"
-                href="{{ url_for('tbl_dish.index') }}"
-                >Dishes</a
-              >
-            </li>
-            {% endif %}
-          </ul>
-          <!--Auth section-->
-          <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-            {% if current_user.is_authenticated %}
-            <li class="nav-item">
-              <span class="navbar-text me-2 text-light">
-                Logged in as <strong>{{ current_user.username }}</strong>
-              </span>
-            </li>
-            <li class="nav-item">
-              <a href="{{ url_for('auth.logout') }}" class="nav-link">Logout</a>
-            </li>
-            {% else %}
-            <li class="nav-item">
-              <a href="{{ url_for('auth.login') }}" class="nav-link">Login</a>
-            </li>
-            {% endif %}
-          </ul>
-        </div>
+            <a class="nav-link text-white {% if request.blueprint == 'tbl_dish.index' %}active{% endif %}"
+              href="{{ url_for('tbl_dish.index') }}">
+              មុខម្ហូប
+            </a>
+          </li>
+          {% endif %}
+
+          {% if current_user.is_authenticated and current_user.has_permission(perm.USER_READ)%}
+          
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle text-white" href="#" data-bs-toggle="dropdown">
+              គ្រប់គ្រងអ្នកប្រើប្រាស់
+            </a>
+
+            <ul class="dropdown-menu shadow">
+
+              {% if current_user.has_permission(perm.USER_READ) %}
+              <li><a class="dropdown-item" href="{{ url_for('tbl_users.index') }}">បញ្ជីអ្នកប្រើ</a></li>
+              {% endif %}
+
+              {% if current_user.has_permission(perm.ROLE_READ) %}
+              <li><a class="dropdown-item" href="{{ url_for('tbl_roles.index') }}">តួនាទី</a></li>
+              {% endif %}
+
+              {% if current_user.has_permission(perm.PERM_READ) %}
+              <li><a class="dropdown-item" href="{{ url_for('tbl_perms.index') }}">សិទ្ធិប្រើប្រាស់</a></li>
+              {% endif %}
+
+            </ul>
+          </li>
+          {% endif %}
+          {% if current_user.is_authenticated and current_user.has_permission(perm.INGREDIENT_READ)%}
+            <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle text-white" href="#" data-bs-toggle="dropdown">
+              គ្រប់គ្រងមុខម្ហូប
+            </a>
+
+            <ul class="dropdown-menu shadow">
+              <li><a class="dropdown-item" href="{{ url_for('tbl_dish.index') }}">មុខម្ហូប</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('tbl_ingredient.index') }}">គ្រឿងផ្សំ</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('tbl_cate.index') }}">ប្រភេទម្ហូប</a></li>
+            </ul>
+          </li>
+          {% endif %}
+          
+        </ul>
+        
+
+
+        <!-- RIGHT -->
+        <ul class="navbar-nav ms-auto">
+          {% if current_user.is_authenticated %}
+          <li class="nav-item">
+            <span class="navbar-text text-white me-3">
+              សូមស្វាគមន៍ <strong>{{ current_user.username }}</strong>
+            </span>
+          </li>
+          <li class="nav-item">
+            <a href="{{ url_for('auth.logout') }}" class="nav-link text-warning">
+              ចាកចេញ
+            </a>
+          </li>
+          {% else %}
+          <li class="nav-item">
+            <a href="{{ url_for('auth.login') }}" class="nav-link text-white">
+              ចូលប្រព័ន្ធ
+            </a>
+          </li>
+          {% endif %}
+        </ul>
+
       </div>
-    </nav>
+    </div>
+  </nav>
 
-    <main class="container">
-      {% with messages= get_flashed_messages(with_categories=true) %} {% if
-      messages %} {% for category, message in messages %}
-      <div
-        class="alert alert-{{ category }} alert-dismissible fade show"
-        role="alert"
-      >
-        {{ message }}
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="alert"
-          aria-label="Close"
-        ></button>
-      </div>
-      {% endfor %} {% endif %} {% endwith %} {% block content %}{% endblock %}
-    </main>
+  <!-- CONTENT -->
+  <main class="container">
 
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
-      crossorigin="anonymous"
-    ></script>
-    <script src="{{ url_for('static', filename='js/main.js')}}"></script>
-    {% block extra_js %}{% endblock %}
-  </body>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% for category, message in messages %}
+    <div class="alert alert-{{ category }} alert-dismissible fade show">
+      {{ message }}
+      <button class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+    {% endfor %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
 </html>

@@ -2,7 +2,7 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import current_user
 from app.models import DishTable, IngredientTable, CategoryTable
-from app.services.expert_system import run_inference
+from app.services.expert_system import InferenceEngine 
 from app.common.permissions import Perm
 from collections import defaultdict
 from app.forms.expert_form import ExpertIngredientForm
@@ -15,7 +15,7 @@ def get_ingredients_grouped_by_category():
     grouped = defaultdict(list)
     for ing in ingredients:
         cat_name = ing.category.name if ing.category else "Uncategorized"
-        grouped[cat_name].append(ing)  # full object
+        grouped[cat_name].append(ing)
     return dict(sorted(grouped.items()))
 
 
@@ -34,7 +34,8 @@ def index():
         elif len(form.ingredients.data) > 20:
             flash("Maximum 20 ingredients allowed.", "warning")
         else:
-            results = run_inference(selected_ids, min_confidence=0.3)
+            engine = InferenceEngine()
+            results = engine.diagnose(selected_ids, min_confidence=0.45)
 
     return render_template(
         "dashboard/index.html",

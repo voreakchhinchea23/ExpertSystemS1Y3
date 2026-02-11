@@ -25,3 +25,103 @@ html, body, h1, h2, h3, h4, h5, h6, p, a, button, input, textarea, select {
 .btn {
   font-family: 'Kantumruy Pro', sans-serif !important;
 }
+body {
+      font-family: 'Kantumruy Pro', sans-serif;
+      background: #f4f6f9;
+    }
+
+    /* NAVBAR */
+    .navbar {
+      background: linear-gradient(90deg, #0d6efd, #0a58ca);
+    }
+
+    .navbar-brand {
+      font-weight: 700;
+      font-size: 20px;
+    }
+
+    .nav-link {
+      font-weight: 500;
+    }
+
+    .dropdown-menu {
+      border-radius: 12px;
+      border: none;
+    }
+
+    .dropdown-item:hover {
+      background: #0d6efd;
+      color: white;
+    }
+
+    /* CARD */
+    .custom-card {
+      border-radius: 18px;
+      border: none;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+    }
+
+    /* BUTTON */
+    .btn-primary {
+      border-radius: 30px;
+      padding: 8px 25px;
+      font-weight: 600;
+    }
+
+    /* Modern UI for Ingredient Selection */
+    .section-title {
+        font-weight: 600;
+        margin-bottom: 15px;
+        border-left: 4px solid #0d6efd;
+        padding-left: 10px;
+    }
+
+    .ingredient-section {
+        background: #f9fafb;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+
+    .ingredient-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        gap: 12px;
+    }
+
+    .ingredient-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 12px;
+        border-radius: 10px;
+        background: #ffffff;
+        border: 1px solid #e0e0e0;
+        cursor: pointer;
+        transition: 0.2s ease;
+        margin-bottom: 0; /* Override default label margin */
+    }
+
+    .ingredient-item:hover {
+        background: #ffffff;
+        border-color: #0d6efd;
+    }
+
+    .ingredient-item input {
+        width: 18px;
+        height: 18px;
+        cursor: pointer;
+    }
+
+    /* Dish Card Enhancements */
+    .dish-card {
+        transition: transform 0.3s ease;
+        border: none;
+    }
+    .dish-card:hover {
+        transform: translateY(-5px);
+    }
+    .progress {
+        border-radius: 10px;
+        background-color: #e9ecef;
+    }
